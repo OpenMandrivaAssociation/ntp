@@ -29,7 +29,6 @@ Patch7:         ntp-4.2.0-droproot.patch
 Patch102:       ntp-4.2.4-droproot.patch
 Patch103:       ntp-stable-4.2.0a-20040616-groups.patch
 Patch104:       ntp-4.1.1c-rc3-authkey.patch
-Patch106:       ntp-4.2.2-loopfilter.patch
 Patch107:       ntp-4.2.0-sbinpath.patch
 Patch108:       ntp-4.2.4-html2man.patch
 # Adjustments to manpage generation (not from Fedora)
@@ -107,13 +106,12 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 %prep
 %setup -q -n ntp-%{rver} -a4
 %patch1 -p1 -b .biarch-utmp
-#%patch2 -p0 -b .ntpdate_quiet
+#%patch2 -p1 -b .ntpdate_quiet
 %patch4 -p1 -b .md5
 %patch6 -p1 -b .lib64
-#%patch102 -p1 -b .droproot
+%patch102 -p1 -b .droproot
 %patch103 -p1 -b .groups
 %patch104 -p1 -b .authkey
-#%patch106 -p1 -b .loopfilter
 %patch107 -p1 -b .sbinpath
 %patch108 -p1 -b .html2man
 %patch109 -p1 -b .adjusts
