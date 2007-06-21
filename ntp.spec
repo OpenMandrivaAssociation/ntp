@@ -1,4 +1,4 @@
-%define rver            4.2.4
+%define rver            4.2.4p2
 %define ntp_user        ntp
 %define ntp_group       ntp
 
@@ -107,13 +107,13 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 %prep
 %setup -q -n ntp-%{rver} -a4
 %patch1 -p1 -b .biarch-utmp
-%patch2 -p0 -b .ntpdate_quiet
+#%patch2 -p0 -b .ntpdate_quiet
 %patch4 -p1 -b .md5
 %patch6 -p1 -b .lib64
-%patch102 -p1 -b .droproot
+#%patch102 -p1 -b .droproot
 %patch103 -p1 -b .groups
 %patch104 -p1 -b .authkey
-%patch106 -p1 -b .loopfilter
+#%patch106 -p1 -b .loopfilter
 %patch107 -p1 -b .sbinpath
 %patch108 -p1 -b .html2man
 %patch109 -p1 -b .adjusts
@@ -167,7 +167,7 @@ bzip2 -9 ChangeLog*
 # cleanup HTML docs directory for %doc
 %{__rm} -rf html/man
 # cleanup patched HTML files
-%{__rm} html/ntpdate.html.droproot
+%{__rm} -f html/ntpdate.html.droproot
 # for %doc
 %{__cp} sntp/README README.sntp
 %{__cp} sntp/COPYRIGHT COPYRIGHT.sntp
@@ -249,6 +249,5 @@ fi
 %{_mandir}/man8/ntpdate.8*
 
 %files doc
+%defattr(0644,root,root,0755)
 %doc COPYRIGHT html/
-
-
