@@ -4,7 +4,7 @@
 
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 6
+Release:        %mkrel 7
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 License:        BSD-Style
 Group:          System/Servers
@@ -128,8 +128,8 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
     --with-crypto=openssl \
     --enable-linuxcaps
 
-%make CFLAGS="%{optflags}"
-%{__make} -C ntpstat-0.2 CFLAGS="%{optflags}"
+%make CFLAGS="$RPM_OPT_FLAGS"
+%{__make} -C ntpstat-0.2 CFLAGS="$RPM_OPT_FLATS"
 
 # generate manpages from HTML docs
 pushd html && ../scripts/html2man && popd
