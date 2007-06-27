@@ -4,7 +4,7 @@
 
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 5
+Release:        %mkrel 6
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 License:        BSD-Style
 Group:          System/Servers
@@ -14,7 +14,6 @@ Source1:        ntp.conf
 Source2:        ntp.keys
 Source3:        ntpd.init
 Source4:        ntpstat-0.2.tar.bz2
-Source6:        ntpdate.bash-completion
 Source7:        ntpd.sysconfig
 Patch1:         ntp-4.1.1-biarch-utmp.patch
 Patch2:         ntp-4.2.0-ntpdate_quiet.diff
@@ -157,9 +156,6 @@ pushd html && ../scripts/html2man && popd
 %{__install} -m644 html/man/man5/*.5 %{buildroot}%{_mandir}/man5/
 %{__install} -m644 html/man/man8/*.8 %{buildroot}%{_mandir}/man8/
 
-# bash completion
-%{__install} -m644 %{SOURCE6} -D %{buildroot}%{_sysconfdir}/bash_completion.d/ntpdate
-
 # biggest file in the main package, when uncompressed
 bzip2 -9 ChangeLog*
 # cleanup HTML docs directory for %doc
@@ -242,7 +238,6 @@ fi
 %files client
 %defattr(-,root,root)
 %doc COPYRIGHT ChangeLog.bz2 README
-%config(noreplace) %{_sysconfdir}/bash_completion.d/ntpdate
 %{_sbindir}/ntpdate
 %{_mandir}/man8/ntpdate.8*
 
