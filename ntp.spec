@@ -4,7 +4,7 @@
 
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 8
+Release:        %mkrel 9
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 License:        BSD-Style
 Group:          System/Servers
@@ -15,6 +15,7 @@ Source2:        ntp.keys
 Source3:        ntpd.init
 Source4:        ntpstat-0.2.tar.bz2
 Source7:        ntpd.sysconfig
+Source8:        usr.sbin.ntpd.apparmor
 Patch1:         ntp-4.1.1-biarch-utmp.patch
 Patch2:         ntp-4.2.0-ntpdate_quiet.diff
 Patch4:         ntp-4.2.4-md5.patch
@@ -41,6 +42,7 @@ Requires(postun):  rpm-helper
 Requires(pre):  rpm-helper
 Requires(preun): rpm-helper
 Requires:       ntp-client
+Conflicts:      apparmor-profiles < 2.1-1.961.5mdv2008.0
 BuildRequires:  autoconf2.5
 BuildRequires:  automake1.7
 BuildRequires:  openssl-static-devel
@@ -166,6 +168,16 @@ bzip2 -9 ChangeLog*
 %{__cp} sntp/README README.sntp
 %{__cp} sntp/COPYRIGHT COPYRIGHT.sntp
 
+# apparmor profile
+mkdir -p %{buildroot}%{_sysconfdir}/apparmor.d
+install -m 0644 %{SOURCE8} %{buildroot}%{_sysconfdir}/apparmor.d/usr.sbin.ntpd
+
+%posttrans
+# if we have apparmor installed, reload if it's being used
+if [ -x /sbin/apparmor_parser ]; then
+        /sbin/service apparmor condreload
+fi
+
 %pre
 %_pre_useradd %{ntp_user} %{_sysconfdir}/ntp /bin/false
 
@@ -199,6 +211,7 @@ fi
 %{_initrddir}/ntpd
 %config(noreplace) %{_sysconfdir}/ntp.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/ntpd
+%config(noreplace) %{_sysconfdir}/apparmor.d/usr.sbin.ntpd
 %attr(-,%{ntp_user},%{ntp_group})%dir %{_sysconfdir}/ntp
 %attr(0640,root,%{ntp_group})%config(noreplace) %{_sysconfdir}/ntp/keys
 %ghost %config(noreplace) %{_sysconfdir}/ntp/step-tickers
