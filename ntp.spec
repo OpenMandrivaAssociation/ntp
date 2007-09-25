@@ -1,11 +1,11 @@
-%define rver            4.2.4p3
-%define ntp_user        ntp
-%define ntp_group       ntp
+%define rver 4.2.4p4
+%define ntp_user ntp
+%define ntp_group ntp
 
+Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 9
-Summary:        Synchronizes system time using the Network Time Protocol (NTP)
+Release:        %mkrel 10
 License:        BSD-Style
 Group:          System/Servers
 Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{rver}.tar.gz
@@ -36,6 +36,7 @@ Patch109:       ntp-4.2.4-html2man-adjusts.patch
 Patch110:       ntp-4.2.4-loopback.patch
 Patch111:       ntp-stable-4.2.0a-20050816-keyfile.patch
 Patch112:       ntp-4.2.4-sprintf.patch
+Patch113:       ntpd-linux-caps.diff
 URL:            http://www.ntp.org/
 Requires(post):  rpm-helper
 Requires(postun):  rpm-helper
@@ -105,6 +106,7 @@ ntpdate (a program for retrieving the date and time from remote machines
 via a network) and ntpd (a daemon which continuously adjusts system time).
 
 %prep
+
 %setup -q -n ntp-%{rver} -a4
 %patch1 -p1 -b .biarch-utmp
 #%patch2 -p1 -b .ntpdate_quiet
@@ -119,6 +121,8 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 %patch110 -p1 -b .loopback
 %patch111 -p1 -b .keyfile
 %patch112 -p1 -b .sprintf
+%patch113 -p0 -b .linux-caps
+
 %{__aclocal} -I m4 -I libopts/m4
 %{__autoconf}
 %{__automake} --foreign
