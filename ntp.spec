@@ -5,9 +5,10 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 10
+Release:        %mkrel 11
 License:        BSD-Style
 Group:          System/Servers
+URL:            http://www.ntp.org/
 Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{rver}.tar.gz
 Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{rver}.tar.gz.md5        
 Source1:        ntp.conf
@@ -37,7 +38,6 @@ Patch110:       ntp-4.2.4-loopback.patch
 Patch111:       ntp-stable-4.2.0a-20050816-keyfile.patch
 Patch112:       ntp-4.2.4-sprintf.patch
 Patch113:       ntpd-linux-caps.diff
-URL:            http://www.ntp.org/
 Requires(post):  rpm-helper
 Requires(postun):  rpm-helper
 Requires(pre):  rpm-helper
