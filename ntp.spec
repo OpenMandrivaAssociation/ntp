@@ -52,6 +52,7 @@ BuildRequires:  elfutils-devel
 BuildRequires:  libcap-devel
 # for html2man
 BuildRequires:  perl-HTML-Parser
+Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The Network Time Protocol (NTP) is used to synchronize a computer's time
