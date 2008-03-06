@@ -5,7 +5,7 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 12
+Release:        %mkrel 13
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -156,6 +156,7 @@ pushd html && ../scripts/html2man && popd
 %{__install} -m644 %{SOURCE7} -D %{buildroot}%{_sysconfdir}/sysconfig/ntpd
 
 /bin/touch %{buildroot}%{_sysconfdir}/ntp/step-tickers
+install -d -m 755 %{buildroot}%{_localstatedir}/ntp
 
 %{__install} -m755 ntpstat-0.2/ntpstat %{buildroot}%{_sbindir}/
 %{__install} -m644 ntpstat-0.2/ntpstat.1 %{buildroot}%{_mandir}/man1/
@@ -186,16 +187,6 @@ fi
 %_pre_useradd %{ntp_user} %{_sysconfdir}/ntp /bin/false
 
 %post
-# ntpd needs to be able to write to the ntp directory
-# as well as into the drift file, but not step-tickers
-# first installs already have the correct permissions
-if [ "$1" = "2" ]; then
-        %{__chown} %{ntp_user}:%{ntp_group} %{_sysconfdir}/ntp
-        [ -f %{_sysconfdir}/ntp/drift ] && \
-                %{__chown} %{ntp_user}:%{ntp_group} %{_sysconfdir}/ntp/drift || :
-        %{__chown} root:%{ntp_group} %{_sysconfdir}/ntp/keys
-        %{__chmod} 0640 %{_sysconfdir}/ntp/keys
-fi
 %_post_service ntpd
 /bin/touch %{_sysconfdir}/ntp/step-tickers
 
@@ -209,16 +200,16 @@ fi
 %{__rm} -rf %{buildroot}
 
 %files
-%defattr(0644,root,root,0755)
-%doc COPYRIGHT NEWS TODO README* ChangeLog.bz2 conf README.sntp COPYRIGHT.sntp
 %defattr(-,root,root)
+%doc COPYRIGHT NEWS TODO README* ChangeLog.bz2 conf README.sntp COPYRIGHT.sntp
 %{_initrddir}/ntpd
 %config(noreplace) %{_sysconfdir}/ntp.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/ntpd
 %config(noreplace) %{_sysconfdir}/apparmor.d/usr.sbin.ntpd
-%attr(-,%{ntp_user},%{ntp_group})%dir %{_sysconfdir}/ntp
+%dir %{_sysconfdir}/ntp
 %attr(0640,root,%{ntp_group})%config(noreplace) %{_sysconfdir}/ntp/keys
-%ghost %config(noreplace) %{_sysconfdir}/ntp/step-tickers
+%config(noreplace) %{_sysconfdir}/ntp/step-tickers
+%attr(-,%{ntp_user},%{ntp_group}) %{_localstatedir}/ntp
 %{_sbindir}/ntp-keygen
 %{_sbindir}/ntp-wait
 %{_sbindir}/ntpd
@@ -259,5 +250,5 @@ fi
 %{_mandir}/man8/ntpdate.8*
 
 %files doc
-%defattr(0644,root,root,0755)
+%defattr(-,root,root)
 %doc COPYRIGHT html/
