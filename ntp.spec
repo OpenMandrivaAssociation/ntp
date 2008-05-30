@@ -5,7 +5,7 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 15
+Release:        %mkrel 16
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -25,6 +25,7 @@ Patch6:         ntp-4.2.4-lib64.patch
 # https://ntp.isc.org/bugs/show_bug.cgi?id=251
 # http://ntp.bkbits.net:8080/ntp-stable/cset@3fe3631eWOmqU87rpGQrj82kAK8NoQ?nav=index.html|ChangeSet@-2w
 Patch7:         ntp-4.2.0-droproot.patch
+Patch8:		ntp-4.2.4p4-check-only-ssl-version.diff
 # Fedora patches
 # This is similar to Patch7
 Patch102:       ntp-4.2.4-droproot.patch
@@ -112,6 +113,7 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 #%patch2 -p1 -b .ntpdate_quiet
 %patch4 -p1 -b .md5
 %patch6 -p1 -b .lib64
+%patch8 -p1 -b .check-only-ssl-version
 %patch102 -p1 -b .droproot
 %patch103 -p1 -b .groups
 %patch104 -p1 -b .authkey
