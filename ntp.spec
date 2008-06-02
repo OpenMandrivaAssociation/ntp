@@ -158,7 +158,7 @@ pushd html && ../scripts/html2man && popd
 %{__install} -m644 %{SOURCE7} -D %{buildroot}%{_sysconfdir}/sysconfig/ntpd
 
 /bin/touch %{buildroot}%{_sysconfdir}/ntp/step-tickers
-install -d -m 755 %{buildroot}%{_localstatedir}/ntp
+install -d -m 755 %{buildroot}%{_localstatedir}/lib/ntp
 
 %{__install} -m755 ntpstat-0.2/ntpstat %{buildroot}%{_sbindir}/
 %{__install} -m644 ntpstat-0.2/ntpstat.1 %{buildroot}%{_mandir}/man1/
@@ -211,7 +211,7 @@ fi
 %dir %{_sysconfdir}/ntp
 %attr(0640,root,%{ntp_group})%config(noreplace) %{_sysconfdir}/ntp/keys
 %config(noreplace) %{_sysconfdir}/ntp/step-tickers
-%attr(-,%{ntp_user},%{ntp_group}) %{_localstatedir}/ntp
+%attr(-,%{ntp_user},%{ntp_group}) %{_localstatedir}/lib/ntp
 %{_sbindir}/ntp-keygen
 %{_sbindir}/ntp-wait
 %{_sbindir}/ntpd
