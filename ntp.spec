@@ -1,11 +1,11 @@
-%define rver 4.2.4p4
+%define rver 4.2.4p5
 %define ntp_user ntp
 %define ntp_group ntp
 
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 17
+Release:        %mkrel 18
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -30,7 +30,6 @@ Patch8:		ntp-4.2.4p4-check-only-ssl-version.diff
 # This is similar to Patch7
 Patch102:       ntp-4.2.4-droproot.patch
 Patch103:       ntp-stable-4.2.0a-20040616-groups.patch
-Patch104:       ntp-4.1.1c-rc3-authkey.patch
 Patch107:       ntp-4.2.0-sbinpath.patch
 Patch108:       ntp-4.2.4-html2man.patch
 # Adjustments to manpage generation (not from Fedora)
@@ -47,7 +46,7 @@ Requires:       ntp-client
 Conflicts:      apparmor-profiles < 2.1-1.961.5mdv2008.0
 BuildRequires:  autoconf2.5
 BuildRequires:  automake1.7
-BuildRequires:  openssl-static-devel
+BuildRequires:  openssl-devel
 BuildRequires:  ncurses-devel
 BuildRequires:  elfutils-devel
 BuildRequires:  libcap-devel
@@ -116,7 +115,6 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 %patch8 -p1 -b .check-only-ssl-version
 %patch102 -p1 -b .droproot
 %patch103 -p1 -b .groups
-%patch104 -p1 -b .authkey
 %patch107 -p1 -b .sbinpath
 %patch108 -p1 -b .html2man
 %patch109 -p1 -b .adjusts
@@ -132,16 +130,16 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 
 %build
 %serverbuild
-%{configure2_5x} \
+
+%configure2_5x \
     --with-crypto=openssl \
     --enable-linuxcaps
 
-%make CFLAGS="$RPM_OPT_FLAGS"
-%{__make} -C ntpstat-0.2 CFLAGS="$RPM_OPT_FLATS"
+%make CFLAGS="$CFLAGS"
+%{__make} -C ntpstat-0.2 CFLAGS="$CFLAGS"
 
 # generate manpages from HTML docs
 pushd html && ../scripts/html2man && popd
-
 
 %install
 %{__rm} -rf %{buildroot}
@@ -150,7 +148,7 @@ pushd html && ../scripts/html2man && popd
 %{__mkdir_p} %{buildroot}%{_mandir}/man5
 %{__mkdir_p} %{buildroot}%{_mandir}/man8
 
-%{makeinstall} bindir=%{buildroot}%{_sbindir}
+%makeinstall bindir=%{buildroot}%{_sbindir}
 
 %{__install} -m644 %{SOURCE1} -D %{buildroot}%{_sysconfdir}/ntp.conf
 %{__install} -m640 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/ntp/keys
@@ -158,7 +156,7 @@ pushd html && ../scripts/html2man && popd
 %{__install} -m644 %{SOURCE7} -D %{buildroot}%{_sysconfdir}/sysconfig/ntpd
 
 /bin/touch %{buildroot}%{_sysconfdir}/ntp/step-tickers
-install -d -m 755 %{buildroot}%{_localstatedir}/lib/ntp
+install -d -m 755 %{buildroot}/var/lib/ntp
 
 %{__install} -m755 ntpstat-0.2/ntpstat %{buildroot}%{_sbindir}/
 %{__install} -m644 ntpstat-0.2/ntpstat.1 %{buildroot}%{_mandir}/man1/
@@ -211,7 +209,7 @@ fi
 %dir %{_sysconfdir}/ntp
 %attr(0640,root,%{ntp_group})%config(noreplace) %{_sysconfdir}/ntp/keys
 %config(noreplace) %{_sysconfdir}/ntp/step-tickers
-%attr(-,%{ntp_user},%{ntp_group}) %{_localstatedir}/lib/ntp
+%attr(-,%{ntp_user},%{ntp_group}) /var/lib/ntp
 %{_sbindir}/ntp-keygen
 %{_sbindir}/ntp-wait
 %{_sbindir}/ntpd
