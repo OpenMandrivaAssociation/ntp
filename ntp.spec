@@ -5,7 +5,7 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 18
+Release:        %mkrel 19
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
