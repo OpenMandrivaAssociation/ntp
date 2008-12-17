@@ -5,7 +5,7 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 19
+Release:        %mkrel 20
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -38,6 +38,7 @@ Patch110:       ntp-4.2.4-loopback.patch
 Patch111:       ntp-stable-4.2.0a-20050816-keyfile.patch
 Patch112:       ntp-4.2.4-sprintf.patch
 Patch113:       ntpd-linux-caps.diff
+Patch114:	ntp-4.2.4p5-format_not_a_string_literal_and_no_format_arguments.diff
 Requires(post):  rpm-helper
 Requires(postun):  rpm-helper
 Requires(pre):  rpm-helper
@@ -113,15 +114,17 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 %patch4 -p1 -b .md5
 %patch6 -p1 -b .lib64
 %patch8 -p1 -b .check-only-ssl-version
+
 %patch102 -p1 -b .droproot
 %patch103 -p1 -b .groups
-%patch107 -p1 -b .sbinpath
+%patch107 -p0 -b .sbinpath
 %patch108 -p1 -b .html2man
 %patch109 -p1 -b .adjusts
 %patch110 -p1 -b .loopback
 %patch111 -p1 -b .keyfile
 %patch112 -p1 -b .sprintf
 %patch113 -p0 -b .linux-caps
+%patch114 -p0 -b .format_not_a_string_literal_and_no_format_arguments
 
 %{__aclocal} -I m4 -I libopts/m4
 %{__autoconf}
