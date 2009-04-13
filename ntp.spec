@@ -5,7 +5,7 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 21
+Release:        %mkrel 22
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -39,6 +39,7 @@ Patch111:       ntp-stable-4.2.0a-20050816-keyfile.patch
 Patch112:       ntp-4.2.4-sprintf.patch
 Patch113:       ntpd-linux-caps.diff
 Patch114:	ntp-4.2.4p5-format_not_a_string_literal_and_no_format_arguments.diff
+Patch115:	ntp-4.2.4p6-CVE-2009-0159.diff
 Requires(post):  rpm-helper
 Requires(postun):  rpm-helper
 Requires(pre):  rpm-helper
@@ -125,10 +126,13 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 %patch112 -p1 -b .sprintf
 %patch113 -p0 -b .linux-caps
 %patch114 -p0 -b .format_not_a_string_literal_and_no_format_arguments
+%patch115 -p0 -b .CVE-2009-0159
 
-%{__aclocal} -I m4 -I libopts/m4
-%{__autoconf}
-%{__automake} --foreign
+#%%{__aclocal} -I m4 -I libopts/m4
+#%%{__autoconf}
+#%%{__automake} --foreign
+autoreconf -fis
+
 %{__perl} -pi -e 's/\r$//g' html/{drivers/*.html,scripts/*}
 
 %build
