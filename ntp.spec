@@ -1,16 +1,16 @@
-%define rver 4.2.4p6
+%define rver 4.2.4p7
 %define ntp_user ntp
 %define ntp_group ntp
 
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 22
+Release:        %mkrel 23
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
 Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{rver}.tar.gz
-Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{rver}.tar.gz.md5        
+Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{rver}.tar.gz.md5
 Source1:        ntp.conf
 Source2:        ntp.keys
 Source3:        ntpd.init
@@ -18,8 +18,6 @@ Source4:        ntpstat-0.2.tar.bz2
 Source7:        ntpd.sysconfig
 Source8:        usr.sbin.ntpd.apparmor
 Patch1:         ntp-4.1.1-biarch-utmp.patch
-Patch2:         ntp-4.2.0-ntpdate_quiet.diff
-Patch4:         ntp-4.2.4-md5.patch
 Patch6:         ntp-4.2.4-lib64.patch
 # http://qa.mandriva.com/show_bug.cgi?id=14333
 # https://ntp.isc.org/bugs/show_bug.cgi?id=251
@@ -39,7 +37,6 @@ Patch111:       ntp-stable-4.2.0a-20050816-keyfile.patch
 Patch112:       ntp-4.2.4-sprintf.patch
 Patch113:       ntpd-linux-caps.diff
 Patch114:	ntp-4.2.4p5-format_not_a_string_literal_and_no_format_arguments.diff
-Patch115:	ntp-4.2.4p6-CVE-2009-0159.diff
 Requires(post):  rpm-helper
 Requires(postun):  rpm-helper
 Requires(pre):  rpm-helper
@@ -111,8 +108,7 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 
 %setup -q -n ntp-%{rver} -a4
 %patch1 -p1 -b .biarch-utmp
-#%patch2 -p1 -b .ntpdate_quiet
-%patch4 -p1 -b .md5
+
 %patch6 -p1 -b .lib64
 %patch8 -p1 -b .check-only-ssl-version
 
@@ -126,7 +122,6 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 %patch112 -p1 -b .sprintf
 %patch113 -p0 -b .linux-caps
 %patch114 -p0 -b .format_not_a_string_literal_and_no_format_arguments
-%patch115 -p0 -b .CVE-2009-0159
 
 #%%{__aclocal} -I m4 -I libopts/m4
 #%%{__autoconf}
