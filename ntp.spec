@@ -18,6 +18,7 @@ Source4:        ntpstat-0.2.tar.bz2
 Source7:        ntpd.sysconfig
 Source8:        usr.sbin.ntpd.apparmor
 Patch1:         ntp-4.1.1-biarch-utmp.patch
+Patch2:		ntp-4.2.4p7-weirdo_double_sntp.1_install_borkiness.diff
 Patch6:         ntp-4.2.4-lib64.patch
 # http://qa.mandriva.com/show_bug.cgi?id=14333
 # https://ntp.isc.org/bugs/show_bug.cgi?id=251
@@ -108,6 +109,7 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 
 %setup -q -n ntp-%{rver} -a4
 %patch1 -p1 -b .biarch-utmp
+%patch2 -p0
 
 %patch6 -p1 -b .lib64
 %patch8 -p1 -b .check-only-ssl-version
