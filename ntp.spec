@@ -38,6 +38,8 @@ Patch111:       ntp-stable-4.2.0a-20050816-keyfile.patch
 Patch112:       ntp-4.2.4-sprintf.patch
 Patch113:       ntpd-linux-caps.diff
 Patch114:	ntp-4.2.4p5-format_not_a_string_literal_and_no_format_arguments.diff
+# http://bugs.gentoo.org/show_bug.cgi?id=270483
+Patch115:	ntp-4.2.4_p6-nano.patch
 Requires(post):  rpm-helper
 Requires(postun):  rpm-helper
 Requires(pre):  rpm-helper
@@ -124,6 +126,7 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 %patch112 -p1 -b .sprintf
 %patch113 -p0 -b .linux-caps
 %patch114 -p0 -b .format_not_a_string_literal_and_no_format_arguments
+%patch115 -p0 -b .nano
 
 #%%{__aclocal} -I m4 -I libopts/m4
 #%%{__autoconf}
