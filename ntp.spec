@@ -1,11 +1,11 @@
-%define rver 4.2.4p7
+%define rver 4.2.4p8
 %define ntp_user ntp
 %define ntp_group ntp
 
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.4
-Release:        %mkrel 27
+Release:        %mkrel 28
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
