@@ -148,7 +148,8 @@ autoreconf -fis
 
 %configure2_5x \
     --with-crypto=openssl \
-    --enable-linuxcaps
+    --enable-linuxcaps \
+    --with-ntpsnmpd
 
 %make CFLAGS="$CFLAGS"
 %{__make} -C ntpstat-0.2 CFLAGS="$CFLAGS"
