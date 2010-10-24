@@ -49,6 +49,8 @@ BuildRequires:  openssl-devel
 BuildRequires:  ncurses-devel
 BuildRequires:  elfutils-devel
 BuildRequires:  libcap-devel
+BuildRequires:  libedit-devel
+BuildRequires:  net-snmp-devel
 # for html2man
 BuildRequires:  perl-HTML-Parser
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
