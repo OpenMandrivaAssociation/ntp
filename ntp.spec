@@ -198,6 +198,12 @@ install -d -m 755 %{buildroot}/var/lib/ntp
 mkdir -p %{buildroot}%{_sysconfdir}/apparmor.d
 install -m 0644 %{SOURCE8} %{buildroot}%{_sysconfdir}/apparmor.d/usr.sbin.ntpd
 
+# prevent man1 pages from hiding the more complete html2man generated man8 ones
+rm -f %{buildroot}%{_mandir}/man1/ntpd.1*
+rm -f %{buildroot}%{_mandir}/man1/ntpdc.1*
+rm -f %{buildroot}%{_mandir}/man1/ntp-keygen.1*
+rm -f %{buildroot}%{_mandir}/man1/ntpq.1*
+
 %posttrans
 # if we have apparmor installed, reload if it's being used
 if [ -x /sbin/apparmor_parser ]; then
@@ -242,11 +248,6 @@ fi
 %{_sbindir}/ntp-wait
 %{_sbindir}/sntp
 %{_sbindir}/tickadj
-# prevent man1 pages from hiding the more complete html2man generated man8 ones
-%exclude %{_mandir}/man1/ntpd.1*
-%exclude %{_mandir}/man1/ntpdc.1*
-%exclude %{_mandir}/man1/ntp-keygen.1*
-%exclude %{_mandir}/man1/ntpq.1*
 %{_mandir}/man1/ntpd.1*
 %{_mandir}/man1/ntpdc.1*
 %{_mandir}/man1/ntp-keygen.1*
