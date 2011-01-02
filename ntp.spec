@@ -5,7 +5,7 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.6
-Release:        %mkrel 1
+Release:        %mkrel 2
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -44,7 +44,7 @@ Requires(preun): rpm-helper
 Requires:       ntp-client
 Conflicts:      apparmor-profiles < 2.1-1.961.5mdv2008.0
 BuildRequires:  autoconf2.5
-BuildRequires:  automake1.7
+BuildRequires:  automake
 BuildRequires:  openssl-devel
 BuildRequires:  ncurses-devel
 BuildRequires:  elfutils-devel
