@@ -248,10 +248,6 @@ fi
 %{_sbindir}/ntp-wait
 %{_sbindir}/sntp
 %{_sbindir}/tickadj
-%{_mandir}/man1/ntpd.1*
-%{_mandir}/man1/ntpdc.1*
-%{_mandir}/man1/ntp-keygen.1*
-%{_mandir}/man1/ntpq.1*
 %{_mandir}/man1/ntpsnmpd.1*
 %{_mandir}/man1/ntpstat.1*
 %{_mandir}/man1/sntp.1*
