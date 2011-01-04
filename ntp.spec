@@ -1,16 +1,16 @@
-%define rver 4.2.6p2
+%define pver p3
 %define ntp_user ntp
 %define ntp_group ntp
 
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
-Version:        4.2.6
-Release:        %mkrel 2
+Version:        4.2.6%{pver}
+Release:        %mkrel 1
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
-Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{rver}.tar.gz
-Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{rver}.tar.gz.md5
+Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{version}.tar.gz
+Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{version}.tar.gz.md5
 Source1:        ntp.conf
 Source2:        ntp.keys
 Source3:        ntpd.init
@@ -32,6 +32,7 @@ Patch12: ntp-4.2.4p7-getprecision.patch
 Patch13: ntp-4.2.6p1-logdefault.patch
 Patch14: ntp-4.2.6p2-mlock.patch
 Patch15: ntp-4.2.6p2-multiopts.patch
+Patch16: ntp-4.2.6p3-no_checkChangeLog.diff
 Patch50: ntpstat-0.2-clksrc.patch
 Patch51: ntpstat-0.2-multipacket.patch
 Patch52: ntpstat-0.2-sysvars.patch
@@ -108,15 +109,15 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 
 %prep
 
-%setup -q -n ntp-%{rver} -a4
+%setup -q -n ntp-%{version} -a4
 %patch1 -p1 -b .sleep
 %patch2 -p1 -b .droproot
-%patch3 -p1 -b .bcast
+%patch3 -p0 -b .bcast
 %patch4 -p1 -b .cmsgalign
 %ifarch ia64
 %patch5 -p1 -b .linkfastmath
 %endif
-%patch6 -p1 -b .tentative
+%patch6 -p0 -b .tentative
 %patch7 -p1 -b .retcode
 %patch8 -p1 -b .rtnetlink
 %patch9 -p1 -b .html2man
@@ -126,6 +127,7 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 %patch13 -p1 -b .logdefault
 %patch14 -p1 -b .mlock
 %patch15 -p1 -b .multiopts
+%patch16 -p0 -b .no_checkChangeLog
 
 # set default path to sntp KoD database
 sed -i 's|/var/db/ntp-kod|%{_localstatedir}/lib/ntp/sntp-kod|' sntp/*.{1,c}
