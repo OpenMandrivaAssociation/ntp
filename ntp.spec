@@ -47,6 +47,7 @@ Conflicts:      apparmor-profiles < 2.1-1.961.5mdv2008.0
 BuildRequires:  autoconf2.5
 BuildRequires:  automake
 BuildRequires:  openssl-devel
+BuildRequires:  perl-devel
 BuildRequires:  ncurses-devel
 BuildRequires:  elfutils-devel
 BuildRequires:  libcap-devel
