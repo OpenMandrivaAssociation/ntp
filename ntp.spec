@@ -1,4 +1,4 @@
-%define pver p4
+%define pver p5
 %define ntp_user ntp
 %define ntp_group ntp
 
