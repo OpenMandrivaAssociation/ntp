@@ -1,0 +1,21 @@
+--- Makefile.am	2010-12-25 10:40:35.000000000 +0100
++++ Makefile.am.oden	2011-01-04 15:03:28.375803583 +0100
+@@ -99,7 +99,6 @@
+ 	$(srcdir)/version.m4		\
+ 	$(srcdir)/include/version.def	\
+ 	$(srcdir)/include/version.texi	\
+-	$(srcdir)/.checkChangeLog	\
+ 	$(NULL)
+ 
+ $(srcdir)/COPYRIGHT: $(srcdir)/html/copyright.html
+@@ -139,10 +138,6 @@
+ 	TEMPDIR=`pwd` && export TEMPDIR && cd $(srcdir) && \
+ 	./scripts/genver include/version.texi
+ 
+-$(srcdir)/.checkChangeLog: $(srcdir)/ChangeLog $(srcdir)/scripts/checkChangeLog
+-	cd $(srcdir) && \
+-	./scripts/checkChangeLog
+-
+ libtool: $(LIBTOOL_DEPS)
+ 	./config.status --recheck
+ 

@@ -1,0 +1,66 @@
+diff -Naurp ntp-4.2.6p3/lib/isc/unix/ifiter_ioctl.c ntp-4.2.6p3.oden/lib/isc/unix/ifiter_ioctl.c
+--- ntp-4.2.6p3/lib/isc/unix/ifiter_ioctl.c	2010-12-25 10:40:34.000000000 +0100
++++ ntp-4.2.6p3.oden/lib/isc/unix/ifiter_ioctl.c	2011-01-04 14:55:42.612737516 +0100
+@@ -159,7 +159,7 @@ getbuf4(isc_interfaceiter_t *iter) {
+ 				break;
+ 		}
+ 		if (iter->bufsize >= IFCONF_BUFSIZE_MAX) {
+-			UNEXPECTED_ERROR(__FILE__, __LINE__,
++			UNEXPECTED_ERROR(__FILE__, __LINE__, "%s", 
+ 					 isc_msgcat_get(isc_msgcat,
+ 							ISC_MSGSET_IFITERIOCTL,
+ 							ISC_MSG_BUFFERMAX,
+diff -Naurp ntp-4.2.6p3/ntpd/ntp_config.c ntp-4.2.6p3.oden/ntpd/ntp_config.c
+--- ntp-4.2.6p3/ntpd/ntp_config.c	2011-01-04 14:55:30.770210499 +0100
++++ ntp-4.2.6p3.oden/ntpd/ntp_config.c	2011-01-04 14:55:42.613737392 +0100
+@@ -2326,7 +2326,7 @@ config_access(
+ 		if ((RES_MSSNTP & flags) && !warned_signd) {
+ 			warned_signd = 1;
+ 			fprintf(stderr, "%s\n", signd_warning);
+-			msyslog(LOG_WARNING, signd_warning);
++			msyslog(LOG_WARNING, "%s", signd_warning);
+ 		}
+ 	}
+ }
+diff -Naurp ntp-4.2.6p3/ntpd/ntp_control.c ntp-4.2.6p3.oden/ntpd/ntp_control.c
+--- ntp-4.2.6p3/ntpd/ntp_control.c	2010-12-25 10:40:36.000000000 +0100
++++ ntp-4.2.6p3.oden/ntpd/ntp_control.c	2011-01-04 14:55:42.615737138 +0100
+@@ -2948,7 +2948,7 @@ report_event(
+ 			    " %s", str);
+ 		}
+ 		NLOG(NLOG_SYSEVENT)
+-		    msyslog(LOG_INFO, statstr);
++		    msyslog(LOG_INFO, "%s", statstr);
+ 	} else {
+ 
+ 		/*
+@@ -2980,7 +2980,7 @@ report_event(
+ 			    " %s", str);
+ 		}
+ 		NLOG(NLOG_PEEREVENT)
+-		    msyslog(LOG_INFO, statstr);
++		    msyslog(LOG_INFO, "%s", statstr);
+ 	}
+ 	record_proto_stats(statstr);
+ #if DEBUG
+diff -Naurp ntp-4.2.6p3/ntpd/ntpd.c ntp-4.2.6p3.oden/ntpd/ntpd.c
+--- ntp-4.2.6p3/ntpd/ntpd.c	2011-01-04 14:55:30.772210251 +0100
++++ ntp-4.2.6p3.oden/ntpd/ntpd.c	2011-01-04 14:55:42.616737012 +0100
+@@ -1242,7 +1242,7 @@ library_fatal_error(const char *file, in
+ 
+ 	msyslog(LOG_ERR, "%s:%d: fatal error:", file, line);
+ 	vsnprintf(errbuf, sizeof(errbuf), format, args);
+-	msyslog(LOG_ERR, errbuf);
++	msyslog(LOG_ERR, "%s", errbuf);
+ 	msyslog(LOG_ERR, "exiting (due to fatal error in library)");
+ 
+ 	abort();
+@@ -1264,7 +1264,7 @@ library_unexpected_error(const char *fil
+ 
+ 	msyslog(LOG_ERR, "%s:%d: unexpected error:", file, line);
+ 	vsnprintf(errbuf, sizeof(errbuf), format, args);
+-	msyslog(LOG_ERR, errbuf);
++	msyslog(LOG_ERR, "%s", errbuf);
+ 
+ 	if (++unexpected_error_cnt == MAX_UNEXPECTED_ERRORS)
+ 	{

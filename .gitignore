@@ -1,0 +1,8 @@
+ntp-4.2.6p5.tar.gz
+ntp-4.2.6p5.tar.gz.md5
+ntp.conf
+ntpd.init
+ntpd.sysconfig
+ntp.keys
+ntpstat-0.2.tar.bz2
+usr.sbin.ntpd.apparmor
