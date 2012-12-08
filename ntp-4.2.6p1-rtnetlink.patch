@@ -1,0 +1,39 @@
+diff -Naurp ntp-4.2.6p3/configure ntp-4.2.6p3.oden/configure
+--- ntp-4.2.6p3/configure	2011-01-04 03:03:47.000000000 +0100
++++ ntp-4.2.6p3.oden/configure	2011-01-04 14:51:40.169892475 +0100
+@@ -25858,8 +25858,8 @@ else
+ /* end confdefs.h.  */
+ 
+ 		#include <stddef.h>
++		#include <sys/socket.h>
+ 		#include <linux/rtnetlink.h>
+-
+ int
+ main ()
+ {
+diff -Naurp ntp-4.2.6p3/configure.ac ntp-4.2.6p3.oden/configure.ac
+--- ntp-4.2.6p3/configure.ac	2011-01-04 02:57:27.000000000 +0100
++++ ntp-4.2.6p3.oden/configure.ac	2011-01-04 14:52:11.907944962 +0100
+@@ -947,6 +947,7 @@ AC_CACHE_CHECK(
+ 	[AC_LANG_PROGRAM(
+ 	    [[
+ 		#include <stddef.h>
++		#include <sys/socket.h>
+ 		#include <linux/rtnetlink.h>
+ 	    ]],
+ 	    [[
+diff -Naurp ntp-4.2.6p3/ntpd/ntp_io.c ntp-4.2.6p3.oden/ntpd/ntp_io.c
+--- ntp-4.2.6p3/ntpd/ntp_io.c	2011-01-04 14:52:32.704358333 +0100
++++ ntp-4.2.6p3.oden/ntpd/ntp_io.c	2011-01-04 14:50:35.407947388 +0100
+@@ -4549,10 +4549,7 @@ init_async_notifications()
+ #ifdef HAVE_RTNETLINK
+ 	memset(&sa, 0, sizeof(sa));
+ 	sa.nl_family = PF_NETLINK;
+-	sa.nl_groups = RTMGRP_LINK | RTMGRP_IPV4_IFADDR
+-		       | RTMGRP_IPV6_IFADDR | RTMGRP_IPV4_ROUTE
+-		       | RTMGRP_IPV4_MROUTE | RTMGRP_IPV6_ROUTE
+-		       | RTMGRP_IPV6_MROUTE;
++	sa.nl_groups = RTMGRP_IPV4_IFADDR | RTMGRP_IPV6_IFADDR;
+ 	if (bind(fd, (struct sockaddr *)&sa, sizeof(sa)) < 0) {
+ 		msyslog(LOG_ERR,
+ 			"bind failed on routing socket (%m) - using polled interface update");

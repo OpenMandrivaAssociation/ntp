@@ -1,9 +1,3 @@
 sources:
-  "ntp-4.2.6p5.tar.gz:"	4a5353a4791b6f4315a66c28d504ec6c7926b192
-  "ntp-4.2.6p5.tar.gz.md5:"	76c6da625b66d71766b9ebc0ef133c294307858f
-  "ntp.conf:"	c80f9ca6a0960413135f288015b5cf585f7e8da3
-  "ntpd.init:"	611ab67705a22ca8c25d896eb0c7312f45407a80
-  "ntpd.sysconfig:"	7e7a5565aeda511256e225469dcc95fa0c95def0
-  "ntp.keys:"	6d53b520dfc5b9ca621dbbfc0665daead06ae741
-  "ntpstat-0.2.tar.bz2:"	b7ee43e3eb718bc6d46d97d7fd6472121b362544
-  "usr.sbin.ntpd.apparmor:"	055e9338f2a2af2b83c9d6e02579a8332d38a2ba
+  "ntp-4.2.6p3.tar.gz": 1d560cf689054a14e0d7446cb7bab50a92ead647
+  "ntpstat-0.2.tar.bz2": b7ee43e3eb718bc6d46d97d7fd6472121b362544
