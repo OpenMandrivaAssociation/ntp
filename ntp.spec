@@ -38,6 +38,7 @@ Patch51: ntpstat-0.2-multipacket.patch
 Patch52: ntpstat-0.2-sysvars.patch
 Patch53: ntpstat-0.2-maxerror.patch
 Patch300: ntp-4.2.4p5-format_not_a_string_literal_and_no_format_arguments.diff
+Patch301: ntp-automake-1.13.patch
 Requires(post):  rpm-helper
 Requires(postun):  rpm-helper
 Requires(pre):  rpm-helper
@@ -54,7 +55,6 @@ BuildRequires:  libedit-devel
 BuildRequires:  net-snmp-devel
 # for html2man
 BuildRequires:  perl-HTML-Parser
-Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The Network Time Protocol (NTP) is used to synchronize a computer's time
@@ -139,6 +139,7 @@ sed -i 's|/var/db/ntp-kod|%{_localstatedir}/lib/ntp/sntp-kod|' sntp/*.{1,c}
 %patch53 -p1 -b .maxerror
 
 %patch300 -p1 -b .format_not_a_string_literal_and_no_format_arguments
+%patch301 -p1 -b .am113~
 
 #%%{__aclocal} -I m4 -I libopts/m4
 #%%{__autoconf}
