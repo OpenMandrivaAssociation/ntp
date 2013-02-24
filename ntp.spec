@@ -1,11 +1,11 @@
-%define pver p3
+%define pver p5
 %define ntp_user ntp
 %define ntp_group ntp
 
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.6%{pver}
-Release:        %mkrel 4
+Release:        2
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
