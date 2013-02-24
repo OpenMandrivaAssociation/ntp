@@ -18,25 +18,25 @@ Source4:        ntpstat-0.2.tar.bz2
 Source7:        ntpd.sysconfig
 Source8:        usr.sbin.ntpd.apparmor
 Patch1: ntp-4.2.6p1-sleep.patch
-Patch2: ntp-4.2.6p1-droproot.patch
+Patch2: ntp-4.2.6p4-droproot.patch
 Patch3: ntp-4.2.6p1-bcast.patch
 Patch4: ntp-4.2.6p1-cmsgalign.patch
 Patch5: ntp-4.2.6p1-linkfastmath.patch
 Patch6: ntp-4.2.6p2-tentative.patch
 Patch7: ntp-4.2.6p1-retcode.patch
-Patch8: ntp-4.2.6p1-rtnetlink.patch
-Patch9: ntp-4.2.6p2-html2man.patch
-Patch10: ntp-4.2.6p2-htmldoc.patch
+Patch8: ntp-4.2.6p4-rtnetlink.patch
+Patch10: ntp-4.2.6p4-htmldoc.patch
 Patch11: ntp-4.2.6p1-nano.patch
 Patch12: ntp-4.2.4p7-getprecision.patch
 Patch13: ntp-4.2.6p1-logdefault.patch
-Patch14: ntp-4.2.6p2-mlock.patch
+Patch14: ntp-4.2.6p4-mlock.patch
 Patch15: ntp-4.2.6p2-multiopts.patch
 Patch16: ntp-4.2.6p3-no_checkChangeLog.diff
 Patch50: ntpstat-0.2-clksrc.patch
 Patch51: ntpstat-0.2-multipacket.patch
 Patch52: ntpstat-0.2-sysvars.patch
 Patch53: ntpstat-0.2-maxerror.patch
+Patch54: ntpstat-0.2-errorbit.patch
 Patch300: ntp-4.2.4p5-format_not_a_string_literal_and_no_format_arguments.diff
 Patch301: ntp-automake-1.13.patch
 Requires(post):  rpm-helper
@@ -120,7 +120,6 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 %patch6 -p0 -b .tentative
 %patch7 -p1 -b .retcode
 %patch8 -p1 -b .rtnetlink
-%patch9 -p1 -b .html2man
 %patch10 -p1 -b .htmldoc
 %patch11 -p1 -b .nano
 %patch12 -p1 -b .getprecision
@@ -137,6 +136,7 @@ sed -i 's|/var/db/ntp-kod|%{_localstatedir}/lib/ntp/sntp-kod|' sntp/*.{1,c}
 %patch51 -p1 -b .multipacket
 %patch52 -p1 -b .sysvars
 %patch53 -p1 -b .maxerror
+%patch54 -p1 -b .errorbit
 
 %patch300 -p1 -b .format_not_a_string_literal_and_no_format_arguments
 %patch301 -p1 -b .am113~
