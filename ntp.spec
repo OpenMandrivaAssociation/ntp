@@ -8,7 +8,7 @@ Version:        4.2.6%{pver}
 Release:        2
 License:        BSD-Style
 Group:          System/Servers
-URL:            http://www.ntp.org/
+Url:            http://www.ntp.org/
 Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{version}.tar.gz
 Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{version}.tar.gz.md5
 Source1:        ntp.conf
@@ -17,44 +17,38 @@ Source3:        ntpd.init
 Source4:        ntpstat-0.2.tar.bz2
 Source7:        ntpd.sysconfig
 Source8:        usr.sbin.ntpd.apparmor
-Patch1: ntp-4.2.6p1-sleep.patch
-Patch2: ntp-4.2.6p4-droproot.patch
-Patch3: ntp-4.2.6p1-bcast.patch
-Patch4: ntp-4.2.6p1-cmsgalign.patch
-Patch5: ntp-4.2.6p1-linkfastmath.patch
-Patch6: ntp-4.2.6p2-tentative.patch
-Patch7: ntp-4.2.6p1-retcode.patch
-Patch8: ntp-4.2.6p4-rtnetlink.patch
-Patch10: ntp-4.2.6p4-htmldoc.patch
-Patch11: ntp-4.2.6p1-nano.patch
-Patch12: ntp-4.2.4p7-getprecision.patch
-Patch13: ntp-4.2.6p1-logdefault.patch
-Patch14: ntp-4.2.6p4-mlock.patch
-Patch15: ntp-4.2.6p2-multiopts.patch
-Patch16: ntp-4.2.6p3-no_checkChangeLog.diff
-Patch50: ntpstat-0.2-clksrc.patch
-Patch51: ntpstat-0.2-multipacket.patch
-Patch52: ntpstat-0.2-sysvars.patch
-Patch53: ntpstat-0.2-maxerror.patch
-Patch54: ntpstat-0.2-errorbit.patch
-Patch300: ntp-4.2.4p5-format_not_a_string_literal_and_no_format_arguments.diff
-Patch301: ntp-automake-1.13.patch
-Requires(post):  rpm-helper
-Requires(postun):  rpm-helper
-Requires(pre):  rpm-helper
-Requires(preun): rpm-helper
-Requires:       ntp-client
-Conflicts:      apparmor-profiles < 2.1-1.961.5mdv2008.0
-BuildRequires:  autoconf2.5
-BuildRequires:  automake
-BuildRequires:  openssl-devel
-BuildRequires:  ncurses-devel
-BuildRequires:  elfutils-devel
-BuildRequires:  libcap-devel
-BuildRequires:  libedit-devel
-BuildRequires:  net-snmp-devel
+Patch1:		ntp-4.2.6p1-sleep.patch
+Patch2:		ntp-4.2.6p4-droproot.patch
+Patch3:		ntp-4.2.6p1-bcast.patch
+Patch4:		ntp-4.2.6p1-cmsgalign.patch
+Patch5:		ntp-4.2.6p1-linkfastmath.patch
+Patch6:		ntp-4.2.6p2-tentative.patch
+Patch7:		ntp-4.2.6p1-retcode.patch
+Patch8:		ntp-4.2.6p4-rtnetlink.patch
+Patch10:	ntp-4.2.6p4-htmldoc.patch
+Patch11:	ntp-4.2.6p1-nano.patch
+Patch12:	ntp-4.2.4p7-getprecision.patch
+Patch13:	ntp-4.2.6p1-logdefault.patch
+Patch14:	ntp-4.2.6p4-mlock.patch
+Patch15:	ntp-4.2.6p2-multiopts.patch
+Patch16:	ntp-4.2.6p3-no_checkChangeLog.diff
+Patch50:	ntpstat-0.2-clksrc.patch
+Patch51:	ntpstat-0.2-multipacket.patch
+Patch52:	ntpstat-0.2-sysvars.patch
+Patch53:	ntpstat-0.2-maxerror.patch
+Patch54:	ntpstat-0.2-errorbit.patch
+Patch300:	ntp-4.2.4p5-format_not_a_string_literal_and_no_format_arguments.diff
+Patch301:	ntp-automake-1.13.patch
 # for html2man
 BuildRequires:  perl-HTML-Parser
+BuildRequires:  elfutils-devel
+BuildRequires:  libcap-devel
+BuildRequires:  net-snmp-devel
+BuildRequires:  pkgconfig(libedit)
+BuildRequires:  pkgconfig(ncurses)
+BuildRequires:  pkgconfig(openssl)
+Requires(post,postun,pre,preun):	rpm-helper
+Requires:	ntp-client
 
 %description
 The Network Time Protocol (NTP) is used to synchronize a computer's time
@@ -70,9 +64,8 @@ time synchronized via the NTP protocol.
 Note: Primary, original, big, HTML documentation, is in the package ntp-doc.
 
 %package client
-Summary:        The ntpdate client for setting system time from NTP servers
-Group:          System/Servers
-Conflicts:      ntp < 4.2.0-3mdk
+Summary:	The ntpdate client for setting system time from NTP servers
+Group:		System/Servers
 
 %description client
 The Network Time Protocol (NTP) is used to synchronize a computer's time
@@ -93,8 +86,8 @@ The ntpdate client by itself is useful for occasionally setting the time on
 machines that are not on the net full-time, such as laptops.
 
 %package doc
-Summary:        Complete HTML documentation for ntp
-Group:          System/Servers
+Summary:	Complete HTML documentation for ntp
+Group:		System/Servers
 
 %description doc
 This is the original, complete, documentation for NTP, in HTML format.
@@ -109,7 +102,7 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 
 %prep
 
-%setup -q -n ntp-%{version} -a4
+%setup -q -a4
 %patch1 -p1 -b .sleep
 %patch2 -p1 -b .droproot
 %patch3 -p0 -b .bcast
@@ -146,18 +139,17 @@ sed -i 's|/var/db/ntp-kod|%{_localstatedir}/lib/ntp/sntp-kod|' sntp/*.{1,c}
 #%%{__automake} --foreign
 autoreconf -fis
 
-%{__perl} -pi -e 's/\r$//g' html/{drivers/*.html,scripts/*}
+perl -pi -e 's/\r$//g' html/{drivers/*.html,scripts/*}
 
 %build
 %serverbuild
-
 %configure2_5x \
-    --with-crypto=openssl \
-    --enable-linuxcaps \
-    --with-ntpsnmpd
+	--with-crypto=openssl \
+	--enable-linuxcaps \
+	--with-ntpsnmpd
 
 %make CFLAGS="$CFLAGS"
-%{__make} -C ntpstat-0.2 CFLAGS="$CFLAGS"
+make -C ntpstat-0.2 CFLAGS="$CFLAGS"
 
 # generate manpages from HTML docs
 pushd html
@@ -171,31 +163,29 @@ mv html/man .
 bzip2 -9 ChangeLog*
 
 %install
-%{__rm} -rf %{buildroot}
-
-%{__mkdir_p} %{buildroot}%{_mandir}/man1
-%{__mkdir_p} %{buildroot}%{_mandir}/man5
-%{__mkdir_p} %{buildroot}%{_mandir}/man8
+mkdir -p %{buildroot}%{_mandir}/man1
+mkdir -p %{buildroot}%{_mandir}/man5
+mkdir -p %{buildroot}%{_mandir}/man8
 
 %makeinstall bindir=%{buildroot}%{_sbindir}
 
-%{__install} -m644 %{SOURCE1} -D %{buildroot}%{_sysconfdir}/ntp.conf
-%{__install} -m640 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/ntp/keys
-%{__install} -m755 %{SOURCE3} -D %{buildroot}%{_initrddir}/ntpd
-%{__install} -m644 %{SOURCE7} -D %{buildroot}%{_sysconfdir}/sysconfig/ntpd
+install -m644 %{SOURCE1} -D %{buildroot}%{_sysconfdir}/ntp.conf
+install -m640 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/ntp/keys
+install -m755 %{SOURCE3} -D %{buildroot}%{_initrddir}/ntpd
+install -m644 %{SOURCE7} -D %{buildroot}%{_sysconfdir}/sysconfig/ntpd
 
 /bin/touch %{buildroot}%{_sysconfdir}/ntp/step-tickers
 install -d -m 755 %{buildroot}/var/lib/ntp
 
-%{__install} -m755 ntpstat-0.2/ntpstat %{buildroot}%{_sbindir}/
-%{__install} -m644 ntpstat-0.2/ntpstat.1 %{buildroot}%{_mandir}/man1/
-%{__install} -m644 man/man5/*.5 %{buildroot}%{_mandir}/man5/
-%{__install} -m644 man/man8/*.8 %{buildroot}%{_mandir}/man8/
+install -m755 ntpstat-0.2/ntpstat %{buildroot}%{_sbindir}/
+install -m644 ntpstat-0.2/ntpstat.1 %{buildroot}%{_mandir}/man1/
+install -m644 man/man5/*.5 %{buildroot}%{_mandir}/man5/
+install -m644 man/man8/*.8 %{buildroot}%{_mandir}/man8/
 
 # cleanup patched HTML files
-%{__rm} -f html/ntpdate.html.droproot
+rm -f html/ntpdate.html.droproot
 # for %doc
-%{__cp} sntp/COPYRIGHT COPYRIGHT.sntp
+cp sntp/COPYRIGHT COPYRIGHT.sntp
 
 # apparmor profile
 mkdir -p %{buildroot}%{_sysconfdir}/apparmor.d
@@ -226,11 +216,7 @@ fi
 %postun
 %_postun_userdel %{ntp_user}
 
-%clean
-%{__rm} -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc COPYRIGHT NEWS TODO README* ChangeLog.bz2 conf COPYRIGHT.sntp
 %{_initrddir}/ntpd
 %config(noreplace) %{_sysconfdir}/ntp.conf
@@ -271,13 +257,11 @@ fi
 %{_mandir}/man8/tickadj.8*
 
 %files client
-%defattr(-,root,root)
 %doc COPYRIGHT ChangeLog.bz2 README
 %{_sbindir}/ntpdate
 %{_mandir}/man8/ntpdate.8*
 
 %files doc
-%defattr(-,root,root)
 %doc COPYRIGHT html/
 
 
