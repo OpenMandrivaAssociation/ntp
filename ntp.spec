@@ -5,18 +5,22 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.6%{pver}
-Release:        2
+Release:        3
 License:        BSD-Style
 Group:          System/Servers
-Url:            http://www.ntp.org/
-Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{version}.tar.gz
-Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/%{name}-%{version}.tar.gz.md5
+URL:            http://www.ntp.org/
+Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
+Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz.md5
 Source1:        ntp.conf
 Source2:        ntp.keys
-Source3:        ntpd.init
 Source4:        ntpstat-0.2.tar.bz2
 Source7:        ntpd.sysconfig
-Source8:        usr.sbin.ntpd.apparmor
+Source11:       50-ntpd.list
+Source12:       ntpd.service
+Source13:       ntpdate.service
+Source14:       ntp-wait.service
+Source15:       ntpdate.wrapper
+Source16:       ntpdate.sysconfig
 Patch1:		ntp-4.2.6p1-sleep.patch
 Patch2:		ntp-4.2.6p4-droproot.patch
 Patch3:		ntp-4.2.6p1-bcast.patch
@@ -38,17 +42,18 @@ Patch52:	ntpstat-0.2-sysvars.patch
 Patch53:	ntpstat-0.2-maxerror.patch
 Patch54:	ntpstat-0.2-errorbit.patch
 Patch300:	ntp-4.2.4p5-format_not_a_string_literal_and_no_format_arguments.diff
-Patch301:	ntp-automake-1.13.patch
-# for html2man
-BuildRequires:  perl-HTML-Parser
-BuildRequires:  elfutils-devel
-BuildRequires:  libcap-devel
-BuildRequires:  net-snmp-devel
-BuildRequires:  pkgconfig(libedit)
-BuildRequires:  pkgconfig(ncurses)
-BuildRequires:  pkgconfig(openssl)
-Requires(post,postun,pre,preun):	rpm-helper
+Patch301:	ntp-4.2.6p5-automake-1.13.patch
+Requires(post):  rpm-helper
+Requires(preun): rpm-helper
 Requires:	ntp-client
+BuildRequires:	ncurses-devel
+BuildRequires:	elfutils-devel
+BuildRequires:	net-snmp-devel
+BuildRequires:	pkgconfig(libedit)
+BuildRequires:	pkgconfig(ncurses)
+BuildRequires:	pkgconfig(openssl)
+# for html2man
+BuildRequires:	perl-HTML-Parser
 
 %description
 The Network Time Protocol (NTP) is used to synchronize a computer's time
@@ -63,9 +68,11 @@ time synchronized via the NTP protocol.
 
 Note: Primary, original, big, HTML documentation, is in the package ntp-doc.
 
-%package client
+%package	client
 Summary:	The ntpdate client for setting system time from NTP servers
 Group:		System/Servers
+Requires(post):	rpm-helper 
+Requires(preun):	rpm-helper 
 
 %description client
 The Network Time Protocol (NTP) is used to synchronize a computer's time
@@ -86,8 +93,9 @@ The ntpdate client by itself is useful for occasionally setting the time on
 machines that are not on the net full-time, such as laptops.
 
 %package doc
-Summary:	Complete HTML documentation for ntp
-Group:		System/Servers
+Summary:        Complete HTML documentation for ntp
+Group:          System/Servers
+BuildArch:	noarch
 
 %description doc
 This is the original, complete, documentation for NTP, in HTML format.
@@ -102,7 +110,7 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 
 %prep
 
-%setup -q -a4
+%setup -q -n ntp-%{version} -a4
 %patch1 -p1 -b .sleep
 %patch2 -p1 -b .droproot
 %patch3 -p0 -b .bcast
@@ -132,47 +140,49 @@ sed -i 's|/var/db/ntp-kod|%{_localstatedir}/lib/ntp/sntp-kod|' sntp/*.{1,c}
 %patch54 -p1 -b .errorbit
 
 %patch300 -p1 -b .format_not_a_string_literal_and_no_format_arguments
-%patch301 -p1 -b .am113~
-
-#%%{__aclocal} -I m4 -I libopts/m4
-#%%{__autoconf}
-#%%{__automake} --foreign
-autoreconf -fis
-
-perl -pi -e 's/\r$//g' html/{drivers/*.html,scripts/*}
+%patch301 -p1 -b .automake-1_13
 
 %build
+autoreconf -fis
 %serverbuild
-%configure2_5x \
-	--with-crypto=openssl \
-	--enable-linuxcaps \
-	--with-ntpsnmpd
 
-%make CFLAGS="$CFLAGS"
-make -C ntpstat-0.2 CFLAGS="$CFLAGS"
+%configure2_5x \
+    --with-crypto=openssl \
+    --enable-linuxcaps \
+    --with-ntpsnmpd
+
+%make CFLAGS="%{optflags}"
+%{__make} -C ntpstat-0.2 CFLAGS="%{optflags}"
 
 # generate manpages from HTML docs
 pushd html
 ../scripts/html2man
 # remove adjacent blank lines
 sed -i 's/^[\t\ ]*$//;/./,/^$/!d' man/man*/*.[58]
-popd 
+popd
 
 mv html/man .
 # biggest file in the main package, when uncompressed
 bzip2 -9 ChangeLog*
 
 %install
-mkdir -p %{buildroot}%{_mandir}/man1
-mkdir -p %{buildroot}%{_mandir}/man5
-mkdir -p %{buildroot}%{_mandir}/man8
+install -d -m 755 %{buildroot}%{_mandir}/man1
+install -d -m 755 %{buildroot}%{_mandir}/man5
+install -d -m 755 %{buildroot}%{_mandir}/man8
 
 %makeinstall bindir=%{buildroot}%{_sbindir}
 
-install -m644 %{SOURCE1} -D %{buildroot}%{_sysconfdir}/ntp.conf
-install -m640 %{SOURCE2} -D %{buildroot}%{_sysconfdir}/ntp/keys
-install -m755 %{SOURCE3} -D %{buildroot}%{_initrddir}/ntpd
-install -m644 %{SOURCE7} -D %{buildroot}%{_sysconfdir}/sysconfig/ntpd
+install -d -m 755 %{buildroot}%{_sysconfdir}
+install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ntp.conf
+
+install -d -m 755 %{buildroot}%{_sysconfdir}/ntp
+install -m 640 %{SOURCE2} %{buildroot}%{_sysconfdir}/ntp/keys
+
+install -d -m 755 %{buildroot}%{_sysconfdir}/sysconfig
+install -m 644 %{SOURCE7} %{buildroot}%{_sysconfdir}/sysconfig/ntpd
+install -m 644 %{SOURCE16} %{buildroot}%{_sysconfdir}/sysconfig/ntpdate
+
+install -m 755 %{SOURCE15} %{buildroot}%{_sbindir}/ntpdate-wrapper
 
 /bin/touch %{buildroot}%{_sysconfdir}/ntp/step-tickers
 install -d -m 755 %{buildroot}/var/lib/ntp
@@ -183,13 +193,9 @@ install -m644 man/man5/*.5 %{buildroot}%{_mandir}/man5/
 install -m644 man/man8/*.8 %{buildroot}%{_mandir}/man8/
 
 # cleanup patched HTML files
-rm -f html/ntpdate.html.droproot
+%{__rm} -f html/ntpdate.html.droproot
 # for %doc
-cp sntp/COPYRIGHT COPYRIGHT.sntp
-
-# apparmor profile
-mkdir -p %{buildroot}%{_sysconfdir}/apparmor.d
-install -m 0644 %{SOURCE8} %{buildroot}%{_sysconfdir}/apparmor.d/usr.sbin.ntpd
+%{__cp} sntp/COPYRIGHT COPYRIGHT.sntp
 
 # prevent man1 pages from hiding the more complete html2man generated man8 ones
 rm -f %{buildroot}%{_mandir}/man1/ntpd.1*
@@ -197,11 +203,10 @@ rm -f %{buildroot}%{_mandir}/man1/ntpdc.1*
 rm -f %{buildroot}%{_mandir}/man1/ntp-keygen.1*
 rm -f %{buildroot}%{_mandir}/man1/ntpq.1*
 
-%posttrans
-# if we have apparmor installed, reload if it's being used
-if [ -x /sbin/apparmor_parser ]; then
-        /sbin/service apparmor condreload
-fi
+install -D -p -m 644 %{SOURCE11} %{buildroot}%{_prefix}/lib/systemd/ntp-units.d/50-ntpd.list
+install -D -p -m 644 %{SOURCE12} %{buildroot}%{_unitdir}/ntpd.service
+install -D -p -m 644 %{SOURCE13} %{buildroot}%{_unitdir}/ntpdate.service
+install -D -p -m 644 %{SOURCE14} %{buildroot}%{_unitdir}/ntp-wait.service
 
 %pre
 %_pre_useradd %{ntp_user} %{_sysconfdir}/ntp /bin/false
@@ -218,10 +223,8 @@ fi
 
 %files
 %doc COPYRIGHT NEWS TODO README* ChangeLog.bz2 conf COPYRIGHT.sntp
-%{_initrddir}/ntpd
 %config(noreplace) %{_sysconfdir}/ntp.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/ntpd
-%config(noreplace) %{_sysconfdir}/apparmor.d/usr.sbin.ntpd
 %dir %{_sysconfdir}/ntp
 %attr(0640,root,%{ntp_group})%config(noreplace) %{_sysconfdir}/ntp/keys
 %config(noreplace) %{_sysconfdir}/ntp/step-tickers
@@ -255,13 +258,17 @@ fi
 %{_mandir}/man8/ntptrace.8*
 %{_mandir}/man8/ntp-wait.8*
 %{_mandir}/man8/tickadj.8*
+%{_prefix}/lib/systemd/ntp-units.d/50-ntpd.list
+%{_unitdir}/ntp-wait.service
+%{_unitdir}/ntpd.service
 
 %files client
 %doc COPYRIGHT ChangeLog.bz2 README
 %{_sbindir}/ntpdate
+%{_sbindir}/ntpdate-wrapper
 %{_mandir}/man8/ntpdate.8*
+%{_unitdir}/ntpdate.service
+%config(noreplace) %{_sysconfdir}/sysconfig/ntpdate
 
 %files doc
 %doc COPYRIGHT html/
-
-
