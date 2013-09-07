@@ -49,6 +49,7 @@ Requires:	ntp-client
 BuildRequires:	ncurses-devel
 BuildRequires:	elfutils-devel
 BuildRequires:	net-snmp-devel
+BuildRequires:	cap-devel
 BuildRequires:	pkgconfig(libedit)
 BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(openssl)
