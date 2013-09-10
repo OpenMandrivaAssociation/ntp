@@ -5,7 +5,7 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.6%{pver}
-Release:        4
+Release:        5
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -216,8 +216,14 @@ install -D -p -m 644 %{SOURCE14} %{buildroot}%{_unitdir}/ntp-wait.service
 %_post_service ntpd
 /bin/touch %{_sysconfdir}/ntp/step-tickers
 
+%post client
+%_post_service ntpdate
+
 %preun
 %_preun_service ntpd
+
+%preun client
+%_preun_service ntpdate
 
 %postun
 %_postun_userdel %{ntp_user}
