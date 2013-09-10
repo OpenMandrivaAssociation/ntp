@@ -111,13 +111,12 @@ ntpdate (a program for retrieving the date and time from remote machines
 via a network) and ntpd (a daemon which continuously adjusts system time).
 
 %package	config
-Summary:        Complete HTML documentation for ntp
+Summary:        Complete config for ntp
 Group:          System/Servers
 BuildArch:	noarch
 
 %description config
-This is the original, complete, documentation for NTP, in HTML format.
-Manpages documentation comes with the binary package(s).
+Config files for %{name}
 
 The Network Time Protocol (NTP) is used to synchronize a computer's time
 with another reference time source.  The ntp package contains utilities
