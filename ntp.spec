@@ -5,7 +5,7 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.6%{pver}
-Release:        5
+Release:        6
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -74,6 +74,7 @@ Summary:	The ntpdate client for setting system time from NTP servers
 Group:		System/Servers
 Requires(post):	rpm-helper 
 Requires(preun):	rpm-helper 
+Requires:	%{name}-config
 
 %description client
 The Network Time Protocol (NTP) is used to synchronize a computer's time
@@ -99,6 +100,22 @@ Group:          System/Servers
 BuildArch:	noarch
 
 %description doc
+This is the original, complete, documentation for NTP, in HTML format.
+Manpages documentation comes with the binary package(s).
+
+The Network Time Protocol (NTP) is used to synchronize a computer's time
+with another reference time source.  The ntp package contains utilities
+and daemons which will synchronize your computer's time to Coordinated
+Universal Time (UTC) via the NTP protocol and NTP servers.  Ntp includes
+ntpdate (a program for retrieving the date and time from remote machines
+via a network) and ntpd (a daemon which continuously adjusts system time).
+
+%package	config
+Summary:        Complete HTML documentation for ntp
+Group:          System/Servers
+BuildArch:	noarch
+
+%description config
 This is the original, complete, documentation for NTP, in HTML format.
 Manpages documentation comes with the binary package(s).
 
@@ -229,13 +246,6 @@ install -D -p -m 644 %{SOURCE14} %{buildroot}%{_unitdir}/ntp-wait.service
 %_postun_userdel %{ntp_user}
 
 %files
-%doc COPYRIGHT NEWS TODO README* ChangeLog.bz2 conf COPYRIGHT.sntp
-%config(noreplace) %{_sysconfdir}/ntp.conf
-%config(noreplace) %{_sysconfdir}/sysconfig/ntpd
-%dir %{_sysconfdir}/ntp
-%attr(0640,root,%{ntp_group})%config(noreplace) %{_sysconfdir}/ntp/keys
-%config(noreplace) %{_sysconfdir}/ntp/step-tickers
-%attr(-,%{ntp_user},%{ntp_group}) /var/lib/ntp
 %{_sbindir}/ntpd
 %{_sbindir}/ntpdc
 %{_sbindir}/ntp-keygen
@@ -276,6 +286,15 @@ install -D -p -m 644 %{SOURCE14} %{buildroot}%{_unitdir}/ntp-wait.service
 %{_mandir}/man8/ntpdate.8*
 %{_unitdir}/ntpdate.service
 %config(noreplace) %{_sysconfdir}/sysconfig/ntpdate
+
+%files config
+%doc COPYRIGHT NEWS TODO README* ChangeLog.bz2 conf COPYRIGHT.sntp
+%config(noreplace) %{_sysconfdir}/ntp.conf
+%config(noreplace) %{_sysconfdir}/sysconfig/ntpd
+%dir %{_sysconfdir}/ntp
+%attr(0640,root,%{ntp_group})%config(noreplace) %{_sysconfdir}/ntp/keys
+%config(noreplace) %{_sysconfdir}/ntp/step-tickers
+%attr(-,%{ntp_user},%{ntp_group}) /var/lib/ntp
 
 %files doc
 %doc COPYRIGHT html/
