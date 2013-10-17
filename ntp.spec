@@ -5,7 +5,7 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.6%{pver}
-Release:        8
+Release:        9
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -229,6 +229,9 @@ install -D -p -m 644 %{SOURCE14} %{buildroot}%{_unitdir}/ntp-wait.service
 %_pre_useradd %{ntp_user} %{_sysconfdir}/ntp /bin/false
 
 %pre client
+%_pre_useradd %{ntp_user} %{_sysconfdir}/ntp /bin/false
+
+%pre config
 %_pre_useradd %{ntp_user} %{_sysconfdir}/ntp /bin/false
 
 %post
