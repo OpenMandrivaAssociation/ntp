@@ -1,2 +1,3 @@
 sources:
-  "ntpstat-0.2.tar.bz2": b7ee43e3eb718bc6d46d97d7fd6472121b362544
+  ntp-4.2.8p4.tar.gz: a30f61f87b219ab3613def9e27f5c8e91ce38b0a
+  ntpstat-0.2.tar.bz2: b7ee43e3eb718bc6d46d97d7fd6472121b362544
