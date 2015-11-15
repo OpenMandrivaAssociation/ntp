@@ -34,6 +34,7 @@ Patch54:	ntpstat-0.2-errorbit.patch
 Patch100:	CVE-2015-5300.patch
 Patch101:	CVE-2015-7704.patch
 Requires(post):  rpm-helper
+Requires(post):  ntp-config
 Requires(preun): rpm-helper
 Requires:	ntp-client
 BuildRequires:	ncurses-devel
