@@ -1,11 +1,11 @@
-%define pver p4
+%define pver p12
 %define ntp_user ntp
 %define ntp_group ntp
 
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.8%{pver}
-Release:        2
+Release:        1
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -31,8 +31,6 @@ Patch51:	ntpstat-0.2-multipacket.patch
 Patch52:	ntpstat-0.2-sysvars.patch
 Patch53:	ntpstat-0.2-maxerror.patch
 Patch54:	ntpstat-0.2-errorbit.patch
-Patch100:	CVE-2015-5300.patch
-Patch101:	CVE-2015-7704.patch
 Requires(post):  rpm-helper
 Requires(post):	 ntp-config
 Requires(preun): rpm-helper
