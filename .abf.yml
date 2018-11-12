@@ -1,3 +1,5 @@
+removed_sources:
+  ntpstat-0.2.tar.bz2: b7ee43e3eb718bc6d46d97d7fd6472121b362544
 sources:
   ntp-4.2.8p12.tar.gz: 316a0c823beb3ea12c8ce125442a0cda15c45d73
-  ntpstat-0.2.tar.bz2: b7ee43e3eb718bc6d46d97d7fd6472121b362544
+  ntpstat-0.5.tar.gz: cb8ccc71c5b036bdefe9af8911ea4202dee84a54

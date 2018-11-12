@@ -13,7 +13,8 @@ Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{
 Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz.md5
 Source1:        ntp.conf
 Source2:        ntp.keys
-Source4:        ntpstat-0.2.tar.bz2
+# https://github.com/mlichvar/ntpstat/releases
+Source4:        ntpstat-0.5.tar.gz
 Source7:        ntpd.sysconfig
 Source11:       50-ntpd.list
 Source12:       ntpd.service
@@ -26,11 +27,6 @@ Source17:	ntpdate.8
 #Patch2:		ntp-4.2.6p4-droproot.patch
 #Patch3:		ntp-4.2.6p1-bcast.patch
 #Patch14:	ntp-4.2.6p4-mlock.patch
-Patch50:	ntpstat-0.2-clksrc.patch
-Patch51:	ntpstat-0.2-multipacket.patch
-Patch52:	ntpstat-0.2-sysvars.patch
-Patch53:	ntpstat-0.2-maxerror.patch
-Patch54:	ntpstat-0.2-errorbit.patch
 Requires(post):  rpm-helper
 Requires(post):	 ntp-config
 Requires(preun): rpm-helper
@@ -133,7 +129,7 @@ autoreconf -fis
     --with-ntpsnmpd
 
 %make CFLAGS="%{optflags}"
-%{__make} -C ntpstat-0.2 CFLAGS="%{optflags}"
+%{__make} -C ntpstat-0.5 CFLAGS="%{optflags}"
 
 %install
 install -d -m 755 %{buildroot}%{_mandir}/man1
@@ -157,8 +153,8 @@ install -m 755 %{SOURCE15} %{buildroot}%{_sbindir}/ntpdate-wrapper
 /bin/touch %{buildroot}%{_sysconfdir}/ntp/step-tickers
 install -d -m 755 %{buildroot}/var/lib/ntp
 
-install -m755 ntpstat-0.2/ntpstat %{buildroot}%{_sbindir}/
-install -m644 ntpstat-0.2/ntpstat.1 %{buildroot}%{_mandir}/man1/
+install -m755 ntpstat-0.5/ntpstat %{buildroot}%{_sbindir}/
+install -m644 ntpstat-0.5/ntpstat.1 %{buildroot}%{_mandir}/man1/
 install -m644 %{SOURCE17} %{buildroot}%{_mandir}/man8/
 
 # cleanup patched HTML files
