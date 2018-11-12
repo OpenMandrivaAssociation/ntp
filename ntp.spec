@@ -33,8 +33,10 @@ Requires(preun): rpm-helper
 Requires:	ntp-client
 BuildRequires:	ncurses-devel
 BuildRequires:	elfutils-devel
+BuildRequires:	lm_sensors-devel
 BuildRequires:	net-snmp-devel
 BuildRequires:	cap-devel
+BuildRequires:	wrap-devel
 BuildRequires:	pkgconfig(libedit)
 BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(openssl)
