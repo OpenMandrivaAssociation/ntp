@@ -5,7 +5,7 @@
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.8%{pver}
-Release:        2
+Release:        3
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -27,6 +27,7 @@ Source17:	ntpdate.8
 #Patch2:		ntp-4.2.6p4-droproot.patch
 #Patch3:		ntp-4.2.6p1-bcast.patch
 #Patch14:	ntp-4.2.6p4-mlock.patch
+BuildRequires:	rpm-helper
 Requires(post):  rpm-helper
 Requires(post):	 ntp-config
 Requires(preun): rpm-helper
@@ -125,7 +126,7 @@ sed -i 's|/var/db/ntp-kod|%{_localstatedir}/lib/ntp/sntp-kod|' sntp/*.{man.in,c}
 autoreconf -fis
 %serverbuild
 
-%configure2_5x \
+%configure \
     --with-crypto=openssl \
     --enable-linuxcaps \
     --with-ntpsnmpd
