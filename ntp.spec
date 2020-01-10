@@ -117,7 +117,7 @@ via a network) and ntpd (a daemon which continuously adjusts system time).
 
 %setup -q -n ntp-%{version} -a4
 
-%apply_patches
+%autopatch -p1
 
 # set default path to sntp KoD database
 sed -i 's|/var/db/ntp-kod|%{_localstatedir}/lib/ntp/sntp-kod|' sntp/*.{man.in,c}
