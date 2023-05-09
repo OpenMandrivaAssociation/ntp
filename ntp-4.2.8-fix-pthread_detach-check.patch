@@ -1,0 +1,15 @@
+diff -up ntp-4.2.8p15/sntp/m4/openldap-thread-check.m4.omv~ ntp-4.2.8p15/sntp/m4/openldap-thread-check.m4
+--- ntp-4.2.8p15/sntp/m4/openldap-thread-check.m4.omv~	2023-05-10 01:06:49.683255626 +0200
++++ ntp-4.2.8p15/sntp/m4/openldap-thread-check.m4	2023-05-10 01:07:06.009362587 +0200
+@@ -262,10 +262,7 @@ pthread_rwlock_t rwlock;
+ 				dnl save the flags
+ 				AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+ #include <pthread.h>
+-#ifndef NULL
+-#define NULL (void*)0
+-#endif
+-]], [[pthread_detach(NULL);]])],[ol_cv_func_pthread_detach=yes],[ol_cv_func_pthread_detach=no])
++]], [[pthread_detach(0);]])],[ol_cv_func_pthread_detach=yes],[ol_cv_func_pthread_detach=no])
+ 			])
+ 
+ 			if test $ol_cv_func_pthread_detach = no ; then

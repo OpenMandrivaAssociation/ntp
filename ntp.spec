@@ -1,11 +1,11 @@
-%define pver p13
+%define pver p15
 %define ntp_user ntp
 %define ntp_group ntp
 
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.8%{pver}
-Release:        3
+Release:        1
 License:        BSD-Style
 Group:          System/Servers
 URL:            http://www.ntp.org/
@@ -13,8 +13,8 @@ Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{
 Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz.md5
 Source1:        ntp.conf
 Source2:        ntp.keys
-# https://github.com/mlichvar/ntpstat/releases
-Source4:        ntpstat-0.5.tar.gz
+# https://github.com/mlichvar/ntpstat/tags
+Source4:        https://github.com/mlichvar/ntpstat/archive/refs/tags/0.6.tar.gz
 Source7:        ntpd.sysconfig
 Source11:       50-ntpd.list
 Source12:       ntpd.service
@@ -23,6 +23,8 @@ Source14:       ntp-wait.service
 Source15:       ntpdate.wrapper
 Source16:       ntpdate.sysconfig
 Source17:	ntpdate.8
+Patch0:		ntp-4.2.8-fix-pthread_detach-check.patch
+Patch1:		ntp-4.2.8-PTHREAD_STACK_MIN-is-not-a-constant.patch
 #Patch1:		ntp-4.2.6p1-sleep.patch
 #Patch2:		ntp-4.2.6p4-droproot.patch
 #Patch3:		ntp-4.2.6p1-bcast.patch
@@ -132,7 +134,7 @@ autoreconf -fis
     --with-ntpsnmpd
 
 %make CFLAGS="%{optflags}"
-%{__make} -C ntpstat-0.5 CFLAGS="%{optflags}"
+%{__make} -C ntpstat-0.6 CFLAGS="%{optflags}"
 
 %install
 install -d -m 755 %{buildroot}%{_mandir}/man1
@@ -156,8 +158,8 @@ install -m 755 %{SOURCE15} %{buildroot}%{_sbindir}/ntpdate-wrapper
 /bin/touch %{buildroot}%{_sysconfdir}/ntp/step-tickers
 install -d -m 755 %{buildroot}/var/lib/ntp
 
-install -m755 ntpstat-0.5/ntpstat %{buildroot}%{_sbindir}/
-install -m644 ntpstat-0.5/ntpstat.1 %{buildroot}%{_mandir}/man1/
+install -m755 ntpstat-0.6/ntpstat %{buildroot}%{_sbindir}/
+install -m644 ntpstat-0.6/ntpstat.1 %{buildroot}%{_mandir}/man1/
 install -m644 %{SOURCE17} %{buildroot}%{_mandir}/man8/
 
 # cleanup patched HTML files
