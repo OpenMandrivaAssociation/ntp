@@ -43,7 +43,7 @@ BuildRequires:	wrap-devel
 BuildRequires:	pkgconfig(libedit)
 BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(openssl)
-BuildRequires:	pkgconfig(libbsd)
+BuildRequires:	pkgconfig(libevent)
 # for html2man
 BuildRequires:	perl-HTML-Parser
 
