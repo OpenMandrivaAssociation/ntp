@@ -8,7 +8,7 @@ Version:        4.2.8%{pver}
 Release:        1
 License:        BSD-Style
 Group:          System/Servers
-URL:            http://www.ntp.org/
+URL:            https://www.ntp.org/
 Source0:        http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz
 Source99:       http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/%{name}-%{version}.tar.gz.md5
 Source1:        ntp.conf
