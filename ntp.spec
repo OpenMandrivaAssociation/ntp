@@ -1,11 +1,11 @@
-%define pver p15
+%define pver p18
 %define ntp_user ntp
 %define ntp_group ntp
 
 Summary:        Synchronizes system time using the Network Time Protocol (NTP)
 Name:           ntp
 Version:        4.2.8%{pver}
-Release:        2
+Release:        1
 License:        BSD-Style
 Group:          System/Servers
 URL:            https://www.ntp.org/
@@ -24,7 +24,6 @@ Source15:       ntpdate.wrapper
 Source16:       ntpdate.sysconfig
 Source17:	ntpdate.8
 Patch0:		ntp-4.2.8-fix-pthread_detach-check.patch
-Patch1:		ntp-4.2.8-PTHREAD_STACK_MIN-is-not-a-constant.patch
 #Patch1:		ntp-4.2.6p1-sleep.patch
 #Patch2:		ntp-4.2.6p4-droproot.patch
 #Patch3:		ntp-4.2.6p1-bcast.patch
