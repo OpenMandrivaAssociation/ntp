@@ -44,6 +44,7 @@ BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(libevent)
 BuildRequires:	pkgconfig(libevent_pthreads)
+BuildRequires:	pkgconfig(libnl-3.0)
 # for html2man
 BuildRequires:	perl-HTML-Parser
 
