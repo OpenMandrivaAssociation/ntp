@@ -175,33 +175,13 @@ install -D -p -m 644 %{SOURCE12} %{buildroot}%{_unitdir}/ntpd.service
 install -D -p -m 644 %{SOURCE13} %{buildroot}%{_unitdir}/ntpdate.service
 install -D -p -m 644 %{SOURCE14} %{buildroot}%{_unitdir}/ntp-wait.service
 
-%pre
-%_pre_useradd %{ntp_user} %{_sysconfdir}/ntp /bin/false
-
-%pre client
-%_pre_useradd %{ntp_user} %{_sysconfdir}/ntp /bin/false
-
-%pre config
-%_pre_useradd %{ntp_user} %{_sysconfdir}/ntp /bin/false
+mkdir -p %{buildroot}%{_sysusersdir}
+cat >%{buildroot}%{_sysusersdir}/ntp.conf <<EOF
+u	%{ntp_user}	-	"NTP Server"	%{_sysconfdir}/ntp	%{_bindir}/nologin
+EOF
 
 %post
-%_post_service ntpd
 /bin/touch %{_sysconfdir}/ntp/step-tickers
-
-%post client
-%_post_service ntpdate
-
-%preun
-%_preun_service ntpd
-
-%preun client
-%_preun_service ntpdate
-
-%postun
-%_postun_userdel %{ntp_user}
-
-%postun	client
-%_postun_userdel %{ntp_user}
 
 %files
 %{_sbindir}/ntpd
@@ -246,6 +226,7 @@ install -D -p -m 644 %{SOURCE14} %{buildroot}%{_unitdir}/ntp-wait.service
 
 %files config
 %doc COPYRIGHT NEWS TODO README* ChangeLog conf COPYRIGHT.sntp
+%{_sysusersdir}/ntp.conf
 %config(noreplace) %{_sysconfdir}/ntp.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/ntpd
 %dir %{_sysconfdir}/ntp
