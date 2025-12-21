@@ -28,6 +28,11 @@ Patch0:		ntp-4.2.8-fix-pthread_detach-check.patch
 #Patch2:		ntp-4.2.6p4-droproot.patch
 #Patch3:		ntp-4.2.6p1-bcast.patch
 #Patch14:	ntp-4.2.6p4-mlock.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	rpm-helper
 Requires(post):  rpm-helper
 Requires(post):	 ntp-config
